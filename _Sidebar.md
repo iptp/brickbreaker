@@ -1,1 +1,0 @@
-qqr coisa ai
