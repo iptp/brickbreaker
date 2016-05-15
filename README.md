@@ -1,2 +1,2 @@
 # starter
-oi :D
+An introductory tutorial for Java, using the Greenfoot Framework.
