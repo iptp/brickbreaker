@@ -6,7 +6,7 @@ public class Ball extends Actor
     // The ball's height and width (it will behave more like a square)
     public static final int size = 30;
     
-    // When the ball falls, it is placed back on its home paddle (if one exists)
+    // When the ball falls off, it will placed back on its home paddle (if one exists)
     private Paddle home_paddle;
     
     private int rotation;
@@ -53,7 +53,7 @@ public class Ball extends Actor
             // We use the first brick of the list to compute the collision
             Actor brick = (Actor) bricks.get(0);
             
-            // Check from which direction we collided with the brick and
+            // Check from which direction we collided with the brick to
             // determine how to bounce correctly
             if(!withinBrickX(brick))
                 bounceOnVerticalAxis();
