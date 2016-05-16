@@ -1,4 +1,5 @@
-﻿.DS_Store
-.class
-.ctxt
+﻿*.DS_Store
+*.class
+*.ctxt
 starter.wiki/*
+starter.wiki./*
