@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.awt.Color;
 
 public class MyWorld extends World
 {
@@ -8,11 +9,21 @@ public class MyWorld extends World
     public MyWorld()
     {    
         super(width, height, 1); 
-        prepare();
+        addObject(new Paddle(), width / 2, height - Paddle.height / 2);
+        createLevel();
     }
-
-    private void prepare()
+    
+    private void createLevel()
     {
-        addObject(new Paddle(), width/2, height - Paddle.height/2);
+        Color[] colors = { Color.RED, Color.GREEN, Color.BLUE };
+        for(int x = 2; x < 13; x++)
+        {
+            for(int y = 3; y < 13; y++)
+            {
+                int aux = Greenfoot.getRandomNumber(3);
+                Brick.addBrick(this, colors[aux], x, y);
+            }
+        }
+        
     }
 }

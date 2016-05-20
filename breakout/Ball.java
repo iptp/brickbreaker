@@ -4,31 +4,34 @@ import java.util.*;  // (List)
 public class Ball extends Actor
 {
     // The ball's height and width (it will behave more like a square)
-    public static final int size = 30;
+    public static int size = 30;
     
-    // When the ball falls off, it will placed back on its home paddle (if one exists)
+    // When the ball falls off, it will placed back on this paddle (if it exists)
     private Paddle home_paddle;
     
     private int rotation;
     private int speed;
-    
-    public Ball()
-    {
-        // Create a ball that moves at 4 pixels per frame, facing down (90 degrees)
-        this(null, 4, 90);
-    }
-    
-    public Ball(Paddle paddle)
-    {
-        // Same, but with a home paddle
-        this(paddle, 4, 90);
-    }
-    
+        
     public Ball(Paddle paddle, int speed, int rotation)
     {
         this.home_paddle = paddle;
         this.rotation    = rotation;
         this.speed       = speed;
+    }
+     
+    public Ball(Paddle paddle)
+    {
+        this(paddle, 4, 90);
+    }
+    
+    public Ball(int rotation)
+    {
+        this(null, 4, rotation);
+    }
+    
+    public Ball()
+    {
+        this(null, 4, 90);
     }
 
     public void act() 
@@ -51,13 +54,14 @@ public class Ball extends Actor
         {
             // List returns an Object, we have to convert it to Actor before assigning
             // We use the first brick of the list to compute the collision
-            Actor brick = (Actor) bricks.get(0);
+            // "Brick" is the type (class) of the variable; "brick" is the name!
+            Brick brick = (Brick) bricks.get(0);
             
             // Check from which direction we collided with the brick to
             // determine how to bounce correctly
-            if(!withinBrickX(brick))
+            if(!aboveOrBelow(brick))
                 bounceOnVerticalAxis();
-            if(!withinBrickY(brick))
+            if(!atLeftOrRight(brick))
                 bounceOnHorizontalAxis();
 
             // Destroy all bricks we collided with
@@ -84,8 +88,8 @@ public class Ball extends Actor
         setRotation(rotation);
         move(speed);
         
-        // Always reset rotation to 0, since we don't want to show a rotated ball
-        // Actual rotation is kept in this.rotation
+        // Always reset direction to 0, since we don't want to show a rotated image
+        // Actual direction is kept in the rotation attribute
         setRotation(0);
     }
     
@@ -125,8 +129,8 @@ public class Ball extends Actor
     
     private boolean touchingRightWall()  { return getX() >= MyWorld.width - size/2; }
     private boolean touchingBottomWall() { return getY() >= MyWorld.height - size/2; }
-    private boolean touchingLeftWall()   { return getX() <= 0 + size/2; }
-    private boolean touchingTopWall()    { return getY() <= 0 + size/2; }
+    private boolean touchingLeftWall()   { return getX() < 0 + size/2; }
+    private boolean touchingTopWall()    { return getY() < 0 + size/2; }
             
     private boolean rotationWithin(int start, int end)
     {
@@ -141,23 +145,25 @@ public class Ball extends Actor
         }
     }
       
-    private boolean withinBrickX(Actor brick)
+    private boolean aboveOrBelow(Brick brick)
     {
-        return XWithin(brick.getX() - Brick.width/2, brick.getX() + Brick.width/2);
+        // Checks if X location of the ball is within the space
+        // between the left and right walls of the brick
+        return XWithin(brick.getX() - brick.getWidth() / 2, brick.getX() + brick.getWidth() / 2);
     }
     
-    private boolean withinBrickY(Actor brick)
+    private boolean atLeftOrRight(Brick brick)
     {
-        return YWithin(brick.getY() - Brick.height/2, brick.getY() + Brick.height/2);
+        return YWithin(brick.getY() - brick.getHeight() / 2, brick.getY() + brick.getHeight() / 2);
     }
     
     private boolean XWithin(int left, int right)
     {
-        return (getX() >= left && getX() < right);
+        return (left <= getX() && getX() < right);
     }
     
     private boolean YWithin(int top, int bottom)
     {
-        return (getY() >= top && getY() < bottom);
+        return (top <= getY() && getY() < bottom);
     }
 }

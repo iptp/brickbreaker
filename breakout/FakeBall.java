@@ -2,8 +2,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class FakeBall extends Actor
 {
-    public static final int height = 30;
-    public static final int width = 30;
     private Paddle paddle;
     
     FakeBall(Paddle paddle)
@@ -14,14 +12,11 @@ public class FakeBall extends Actor
     public void act()
     {
         // Follow the home paddle
-        setLocation(paddle.getX(), paddle.getY() - height/2 - FakeBall.height/2);
-        
-        if(Greenfoot.isKeyDown("space"))
-        {
-            // Time to start
-            // Create an actual ball at the same position and destroy this one
-            getWorld().addObject(new Ball(paddle), getX(), getY());
-            getWorld().removeObject(this);
-        }
+        setLocation(paddle.getX(), paddle.getY() - paddle.getHeight() / 2 - getHeight() / 2);
     }
+    
+    // We want to use the image's dimensions for collision and aligment
+    // If we have bricks with different sizes, grid aligment will look funny
+    public int getHeight() { return getImage().getHeight(); }
+    public int getWidth()  { return getImage().getWidth();  }
 }

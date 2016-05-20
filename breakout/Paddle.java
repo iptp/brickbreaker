@@ -2,10 +2,12 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class Paddle extends Actor
 {
-    public static final int width  = 150;
-    public static final int height = 30;
+    public static int width  = 150;
+    public static int height = 30;
     
+    private boolean space_pressed;
     private int speed;
+    private BallManager ballmg;
     
     public Paddle()
     {
@@ -16,15 +18,30 @@ public class Paddle extends Actor
     public Paddle(int speed)
     {
         this.speed = speed;
+        space_pressed = false;
+        ballmg = null;
     }
     
     public void addedToWorld(World world)
     {
+        ballmg = new BallManager(this);
         newBall();
     }
     
     public void act() 
     {
+        if(Greenfoot.isKeyDown("space"))
+        {
+            // TUTORIAL NOTE without space_pressed check, it may shoot many at the same time
+            // We want to shoot only the moment space is pressed,
+            // not on every frame it is pressed down
+            if(!space_pressed)
+                ballmg.shoot();
+            space_pressed = true;
+        }
+        else
+            space_pressed = false;
+        
         if(Greenfoot.isKeyDown("left") && !touchingLeftWall())
         {
             setRotation(180);
@@ -37,14 +54,20 @@ public class Paddle extends Actor
             move(speed);
         }
        
+        // We don't want the image to look rotated
         setRotation(0);
     }
     
     public void newBall()
     {
-        getWorld().addObject(new FakeBall(this), getX(), getY() - height/2 - FakeBall.height/2);
+        ballmg.newBall();
     }
     
-    private boolean touchingRightWall() { return getX() >= MyWorld.width - width/2; }
-    private boolean touchingLeftWall()  { return getX() <= 0 + width/2; }
+    // We want to use the image's dimensions for collision and aligment
+    // If we have bricks with different sizes, grid aligment will look funny
+    public int getHeight() { return getImage().getHeight(); }
+    public int getWidth()  { return getImage().getWidth();  }
+    
+    private boolean touchingRightWall() { return getX() >= MyWorld.width - getWidth() / 2; }
+    private boolean touchingLeftWall()  { return getX() < 0 + getWidth() / 2; }
 }
