@@ -2,7 +2,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.awt.*;
 
 public class Brick extends Actor
-{
+{   
     public Brick(Color color)
     {
         setColor(color);
@@ -16,11 +16,11 @@ public class Brick extends Actor
     
     public void setColor(Color color)
     {
+        // TODO explain
         GreenfootImage aux = new GreenfootImage(getWidth(), getHeight());
         aux.setColor(color);
         aux.fill();
-        aux.setTransparency(127);
-        
+        aux.setTransparency(155);
         getImage().drawImage(aux, 0, 0);
     }
     

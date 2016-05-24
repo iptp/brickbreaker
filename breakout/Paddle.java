@@ -32,9 +32,8 @@ public class Paddle extends Actor
     {
         if(Greenfoot.isKeyDown("space"))
         {
-            // TUTORIAL NOTE without space_pressed check, it may shoot many at the same time
-            // We want to shoot only the moment space is pressed,
-            // not on every frame it is pressed down
+            // TNOTE do without space_pressed first
+            // We want to shoot only the moment space is pressed, not on every frame it is pressed down
             if(!space_pressed)
                 ballmg.shoot();
             space_pressed = true;
@@ -62,12 +61,10 @@ public class Paddle extends Actor
     {
         ballmg.newBall();
     }
-    
-    // We want to use the image's dimensions for collision and aligment
-    // If we have bricks with different sizes, grid aligment will look funny
+
     public int getHeight() { return getImage().getHeight(); }
     public int getWidth()  { return getImage().getWidth();  }
     
-    private boolean touchingRightWall() { return getX() >= MyWorld.width - getWidth() / 2; }
+    private boolean touchingRightWall() { return getX() >= GameScreen.width - getWidth() / 2; }
     private boolean touchingLeftWall()  { return getX() < 0 + getWidth() / 2; }
 }

@@ -16,7 +16,12 @@ public class BallManager
     public void newBall()
     {
         if(ball_count == 0)
+        {
+            // We can't use just "getWorld()" without "paddle." because a BallManager is not an Actor
+            // TNOTE show wrong way
             paddle.getWorld().addObject(fake, getSpawnX(), getSpawnY());
+        }
+
         ball_count++;
     }
     
@@ -25,7 +30,7 @@ public class BallManager
         if(ball_count > 0)
         {
             ball_count--;
-            paddle.getWorld().addObject(new Ball(paddle), getSpawnX(), getSpawnY());
+            paddle.getWorld().addObject(new Ball(paddle, 270), getSpawnX(), getSpawnY());
             if(ball_count == 0)
                 paddle.getWorld().removeObject(fake);
         }
@@ -38,6 +43,7 @@ public class BallManager
     
     public int getSpawnY()
     {
-        return paddle.getY() - paddle.getHeight() / 2 - Ball.size/2;
+        // TNOTE display image with measurements
+        return paddle.getY() - paddle.getHeight() / 2 - Ball.size / 2;
     }
 }

@@ -1,43 +1,45 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.*;  // (List)
+import java.util.List;
 
 public class Ball extends Actor
 {
-    // The ball's height and width (it will behave more like a square)
+    // The ball's height and width
     public static int size = 30;
-    
-    // When the ball falls off, it will placed back on this paddle (if it exists)
-    private Paddle home_paddle;
     
     private int rotation;
     private int speed;
         
-    public Ball(Paddle paddle, int speed, int rotation)
+    public Ball(int speed, int rotation)
     {
-        this.home_paddle = paddle;
-        this.rotation    = rotation;
-        this.speed       = speed;
+        this.rotation = rotation;
+        this.speed    = speed;
     }
      
-    public Ball(Paddle paddle)
-    {
-        this(paddle, 4, 90);
-    }
-    
     public Ball(int rotation)
     {
-        this(null, 4, rotation);
+        this(4, rotation);
     }
     
     public Ball()
     {
-        this(null, 4, 90);
+        this(4, 90);
+    }
+    
+    public Paddle getPaddle()
+    {
+        // God forbid this reckless casting
+        GameScreen g = (GameScreen) getWorld();
+        if(g != null)
+            return g.getPaddle();
     }
 
     public void act() 
     {
+        // We have to convert the type of the world to access the score and lives
+        GameScreen world = (GameScreen) getWorld();
+        
         // Handle paddle collision
-        Actor paddle = getOneIntersectingObject(Paddle.class);
+        Paddle
         
         // If we didn't touch any Paddle, paddle will be null
         if(paddle != null && facingDown())
@@ -52,7 +54,9 @@ public class Ball extends Actor
         // If we didn't touch any Brick, the list will be empty
         if(bricks.size() != 0)
         {
-            // List returns an Object, we have to convert it to Actor before assigning
+            // 100 points for each brick we collided with
+            world.score += 100 * bricks.size();
+            
             // We use the first brick of the list to compute the collision
             // "Brick" is the type (class) of the variable; "brick" is the name!
             Brick brick = (Brick) bricks.get(0);
@@ -69,12 +73,21 @@ public class Ball extends Actor
         }
         
         // Handle wall collision
+        paddle = getPaddle();
         fixRotationRange();
         
         if(facingDown() && touchingBottomWall())
         {
-            if(home_paddle != null)
-                home_paddle.newBall();
+            if(world.lives > 0)
+            {
+                world.lives--;
+                if(paddle != null)
+                    paddle.newBall();
+            }
+            else
+            {
+                world.gameOver();
+            }
             // Destroy this lost ball
             getWorld().removeObject(this);
         }
@@ -127,8 +140,8 @@ public class Ball extends Actor
     private boolean facingLeft()  { return rotationWithin( 90, 270); }
     private boolean facingUp()    { return rotationWithin(180,   0); }
     
-    private boolean touchingRightWall()  { return getX() >= MyWorld.width - size/2; }
-    private boolean touchingBottomWall() { return getY() >= MyWorld.height - size/2; }
+    private boolean touchingRightWall()  { return getX() >= GameScreen.width - size/2; }
+    private boolean touchingBottomWall() { return getY() >= GameScreen.height - size/2; }
     private boolean touchingLeftWall()   { return getX() < 0 + size/2; }
     private boolean touchingTopWall()    { return getY() < 0 + size/2; }
             

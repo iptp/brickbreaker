@@ -1,4 +1,5 @@
 # Planned features:
+0. Lives
 0. Levels
 1. Score and scoreboard
 2. Powerups
