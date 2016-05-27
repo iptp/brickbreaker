@@ -2,12 +2,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class Paddle extends Actor
 {
-    public static int width  = 150;
-    public static int height = 30;
+    public static int DEF_WIDTH  = 150;
+    public static int DEF_HEIGHT = 30;
     
     private boolean space_pressed;
     private int speed;
-    private BallManager ballmg;
     
     public Paddle()
     {
@@ -19,23 +18,23 @@ public class Paddle extends Actor
     {
         this.speed = speed;
         space_pressed = false;
-        ballmg = null;
     }
     
+    @Override
     public void addedToWorld(World world)
     {
-        ballmg = new BallManager(this);
-        newBall();
+
     }
     
+    @Override
     public void act() 
     {
         if(Greenfoot.isKeyDown("space"))
         {
             // TNOTE do without space_pressed first
             // We want to shoot only the moment space is pressed, not on every frame it is pressed down
-            if(!space_pressed)
-                ballmg.shoot();
+            if(space_pressed == false)
+                shootBall();
             space_pressed = true;
         }
         else
@@ -57,14 +56,13 @@ public class Paddle extends Actor
         setRotation(0);
     }
     
-    public void newBall()
+    public void shootBall()
     {
-        ballmg.newBall();
     }
+    
+    private boolean touchingRightWall() { return getX() >= getWorld().getWidth() - getWidth() / 2; }
+    private boolean touchingLeftWall()  { return getX() < 0 + getWidth() / 2; }
 
     public int getHeight() { return getImage().getHeight(); }
     public int getWidth()  { return getImage().getWidth();  }
-    
-    private boolean touchingRightWall() { return getX() >= GameScreen.width - getWidth() / 2; }
-    private boolean touchingLeftWall()  { return getX() < 0 + getWidth() / 2; }
 }

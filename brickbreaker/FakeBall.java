@@ -1,14 +1,15 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 public class FakeBall extends Actor
 {
     private Paddle paddle;
     
-    FakeBall(Paddle paddle)
+    public FakeBall(Paddle paddle)
     {
         this.paddle = paddle;
     }
     
+    @Override
     public void act()
     {
         // Follow the paddle

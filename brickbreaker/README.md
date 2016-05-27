@@ -7,6 +7,8 @@
 0. Create powerup brick(s)
 	* Extra ball
 	* Long paddle
+0. Bricks that take more than one hit
+	* Unbreakable bricks?
 0. High-score board
 	* Probably needs a new (non-Actor) class
 	* Save to file?
