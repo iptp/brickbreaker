@@ -7,9 +7,9 @@ public class SimpleLevel extends Level
     private int gap_top    = 3;
     private int gap_bottom = 5;
     
-    public SimpleLevel(GameScreen gs, int cols, int rows)
+    public SimpleLevel(BrickBreaker world, int cols, int rows)
     {
-        super(gs, cols, rows);
+        super(world, cols, rows);
     }
     
     public void create()
