@@ -1,12 +1,15 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-public class Paddle extends Actor
+public class Paddle extends MyActor
 {
-    public static int DEF_WIDTH  = 150;
-    public static int DEF_HEIGHT = 30;
+    public static int DEFAULT_WIDTH  = 150;
+    public static int DEFAULT_HEIGHT = 30;
     
     private boolean space_pressed;
     private int speed;
+    
+    private int ball_stock;
+    private FakeBall fake;
     
     public Paddle()
     {
@@ -18,12 +21,14 @@ public class Paddle extends Actor
     {
         this.speed = speed;
         space_pressed = false;
+        ball_stock = 0;
+        fake = new FakeBall(this);
     }
     
     @Override
     public void addedToWorld(World world)
     {
-
+        spawnBall();
     }
     
     @Override
@@ -31,8 +36,6 @@ public class Paddle extends Actor
     {
         if(Greenfoot.isKeyDown("space"))
         {
-            // TNOTE do without space_pressed first
-            // We want to shoot only the moment space is pressed, not on every frame it is pressed down
             if(space_pressed == false)
                 shootBall();
             space_pressed = true;
@@ -44,6 +47,8 @@ public class Paddle extends Actor
         {
             setRotation(180);
             move(speed);
+            // We don't want the image to look rotated
+            setRotation(0);
         }
         
         if(Greenfoot.isKeyDown("right") && !touchingRightWall())
@@ -51,18 +56,24 @@ public class Paddle extends Actor
             setRotation(0);
             move(speed);
         }
-       
-        // We don't want the image to look rotated
-        setRotation(0);
     }
     
     public void shootBall()
     {
+        if(ball_stock > 0)
+        {
+            ball_stock--;
+            getWorld().addObject(new Ball(), fake.getX(), fake.getY());
+            getGame().ballCreated();
+            if(ball_stock == 0)
+                getWorld().removeObject(fake);
+        }
     }
     
-    private boolean touchingRightWall() { return getX() >= getWorld().getWidth() - getWidth() / 2; }
-    private boolean touchingLeftWall()  { return getX() < 0 + getWidth() / 2; }
-
-    public int getHeight() { return getImage().getHeight(); }
-    public int getWidth()  { return getImage().getWidth();  }
+    public void spawnBall()
+    {
+        if(ball_stock == 0)
+            getWorld().addObject(fake, 0, 0);
+        ball_stock++;
+    }
 }

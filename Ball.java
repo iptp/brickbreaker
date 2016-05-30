@@ -1,13 +1,21 @@
 import greenfoot.*;
 import java.util.List;
 
-public class Ball extends Actor
+public class Ball extends MyActor
 {
-    public static final int DEFAULT_SIZE = 30;
-    
     private int rotation;
     private int speed;
-        
+    
+    public Ball()
+    {
+        this(4, 270);
+    }
+    
+    public Ball(int rotation)
+    {
+        this(4, rotation);
+    }
+    
     public Ball(int speed, int rotation)
     {
         this.rotation = rotation;
@@ -39,7 +47,7 @@ public class Ball extends Actor
     @Override
     public void addedToWorld(World world)
     {
-        
+        getGame().ballCreated();
     }
 
     @Override
@@ -55,9 +63,9 @@ public class Ball extends Actor
     {
         if(facingDown())
         {
-            Actor paddle = getOneIntersectingObject(Paddle.class);
-            if(paddle != null)  
-                turnAwayFrom(paddle.getX(), getWorld().getHeight());
+            Actor p = getOneIntersectingObject(Paddle.class);
+            if(p != null)  
+                turnAwayFrom(p.getX(), getWorld().getHeight());
         }
     }
     
@@ -75,46 +83,43 @@ public class Ball extends Actor
     
     private void screenCollision()
     {
-        if(facingDown() && touchingBottomWall())
+        if(wentOffScreen())
         {
-            // TODO rip ball
+            getGame().ballRemoved();
             getWorld().removeObject(this);
         }
-        else if(facingLeft()  && touchingLeftWall())
+        else if(facingLeft() && touchingLeftWall())
             bounceOnVerticalAxis();
-        else if(facingUp()    && touchingTopWall())
+        else if(facingUp() && touchingTopWall())
             bounceOnHorizontalAxis();
         else if(facingRight() && touchingRightWall())
             bounceOnVerticalAxis();
     }
     
-    private void turnAwayFrom(int x, int y)
+    public void turnAwayFrom(int x, int y)
     {
         turnTowards(x, y);
         setRotation(rotation + 180);
     }
     
-    private void bounceOnVerticalAxis()
+    public void bounceOnVerticalAxis()
     {
         setRotation(180 - rotation);
     }
     
-    private void bounceOnHorizontalAxis()
+    public void bounceOnHorizontalAxis()
     {
         setRotation(360 - rotation);
     }
     
-    private boolean facingRight() { return rotationWithin(271,  90); }
-    private boolean facingDown()  { return rotationWithin(  1, 180); }
-    private boolean facingLeft()  { return rotationWithin( 91, 270); }
-    private boolean facingUp()    { return rotationWithin(181,   0); }
+    public boolean wentOffScreen() { return getY() == getWorld().getHeight() - 1; }
     
-    private boolean touchingRightWall()  { return getX() >= getWorld().getWidth() - getWidth() / 2; }
-    private boolean touchingBottomWall() { return getY() >= getWorld().getHeight() - 1; }
-    private boolean touchingLeftWall()   { return getX() < 0 + getWidth() / 2; }
-    private boolean touchingTopWall()    { return getY() < 0 + getHeight() / 2; }
+    public boolean facingRight() { return rotationWithin(271,  90); }
+    public boolean facingDown()  { return rotationWithin(  1, 180); }
+    public boolean facingLeft()  { return rotationWithin( 91, 270); }
+    public boolean facingUp()    { return rotationWithin(181,   0); }
     
-    private boolean rotationWithin(int start, int end)
+    public boolean rotationWithin(int start, int end)
     {
         // Check if rotation is within start .. end
         // That is, start < rotation <= end
@@ -126,7 +131,4 @@ public class Ball extends Actor
             return (start <= rotation || rotation < end);
         }
     }
-    
-    public int getHeight() { return getImage().getHeight(); }
-    public int getWidth()  { return getImage().getWidth();  }
 }

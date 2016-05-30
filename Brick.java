@@ -1,22 +1,27 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 import java.awt.Color;
 
-public class Brick extends Actor
-{       
+public class Brick extends MyActor
+{
+    public static final int GRID_WIDTH  = 60;
+    public static final int GRID_HEIGHT = 30;
+    protected static final GreenfootImage DEFAULT_IMAGE = new GreenfootImage("brick.png");
+    
     public Brick()
     {
         // Does nothing
     }
     
-    public Brick(Level level, Color color)
+    public Brick(Color color)
     {
-        setColor(color);
+        setImage(paintBrick(color));
     }
     
     @Override
     public void addedToWorld(World world)
     {
         alignToGrid();
+        getGame().brickCreated();
     }
     
     @Override
@@ -25,42 +30,48 @@ public class Brick extends Actor
         alignToGrid();
     }
     
-    public boolean isBreakable() { return true; }
+    public boolean isBreakable()
+    { 
+        return true;
+    }
     
-    public void setColor(Color color)
+    public GreenfootImage paintBrick(Color color)
     {
-        // Create an image the same size as the brick,
-        GreenfootImage aux = new GreenfootImage(getWidth(), getHeight());
-        // fill it with the desired color,
+        // Make a copy of the default image
+        GreenfootImage img = new GreenfootImage(DEFAULT_IMAGE);
+        // Create an image the same size as the brick
+        GreenfootImage aux = new GreenfootImage(img.getWidth(), img.getHeight());
+        // Fill it with the desired color
         aux.setColor(color);
         aux.fill();
-        // make it a bit transparent,
-        aux.setTransparency(155);
-        // and finally paint it over the brick image
-        getImage().drawImage(aux, 0, 0);
+        // Make it a bit transparent
+        aux.setTransparency(165);
+        // Paint it over the brick's image
+        img.drawImage(aux, 0, 0);
+        return img;
     }
     
     public void collideWith(Ball ball)
     {
+        die();
+    }
+    
+    public void die()
+    {
+        getGame().brickRemoved();
         getWorld().removeObject(this);
     }
     
-    private void alignToGrid()
+    public void alignToGrid()
     {
-        // The location where we want the top-left corner of the brick
-        int cornerX = round(getX(), getWidth());
-        int cornerY = round(getY(), getHeight());
+        // What grid cell are we in?
+        int cellX = getX() / GRID_WIDTH;
+        int cellY = getY() / GRID_HEIGHT;
         
-        // We have to pass the location of the center, not the corner
-        // So, we add half of the brick's dimensions
-        setLocation(cornerX + getWidth() / 2, cornerY + getHeight() / 2);
+        // Position of the center of the cell
+        int centerX = cellX * GRID_WIDTH  + GRID_WIDTH / 2;
+        int centerY = cellY * GRID_HEIGHT + GRID_HEIGHT / 2;
+        
+        setLocation(centerX, centerY);
     }
-    
-    private int round(int num, int to)
-    {
-        return (num / to) * to;
-    }
-    
-    public int getHeight() { return getImage().getHeight(); }
-    public int getWidth()  { return getImage().getWidth();  }
 }

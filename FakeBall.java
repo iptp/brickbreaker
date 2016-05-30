@@ -1,6 +1,6 @@
 import greenfoot.*;
 
-public class FakeBall extends Actor
+public class FakeBall extends MyActor
 {
     private Paddle paddle;
     
@@ -10,12 +10,15 @@ public class FakeBall extends Actor
     }
     
     @Override
+    public void addedToWorld(World world)
+    {
+        setLocation(paddle.getX(), paddle.getY() - paddle.getHeight() / 2 - getHeight() / 2);
+    }
+    
+    @Override
     public void act()
     {
         // Follow the paddle
         setLocation(paddle.getX(), paddle.getY() - paddle.getHeight() / 2 - getHeight() / 2);
     }
-
-    public int getHeight() { return getImage().getHeight(); }
-    public int getWidth()  { return getImage().getWidth();  }
 }
