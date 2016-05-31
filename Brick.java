@@ -21,7 +21,8 @@ public class Brick extends MyActor
     public void addedToWorld(World world)
     {
         alignToGrid();
-        getGame().brickCreated();
+        if(isBreakable())
+            getGame().brickCreated();
     }
     
     @Override
@@ -58,7 +59,8 @@ public class Brick extends MyActor
     
     public void die()
     {
-        getGame().brickRemoved();
+        if(isBreakable())
+            getGame().brickRemoved();
         getWorld().removeObject(this);
     }
     

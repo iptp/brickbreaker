@@ -64,8 +64,14 @@ public class Ball extends MyActor
         if(facingDown())
         {
             Actor p = getOneIntersectingObject(Paddle.class);
-            if(p != null)  
-                turnAwayFrom(p.getX(), getWorld().getHeight());
+            if(p != null)
+            {
+                // If the ball is too low (past center of paddle), it will keep going down offscren
+                if(getY() > p.getY())
+                    bounceOnVerticalAxis();
+                else
+                    turnAwayFrom(p.getX(), getWorld().getHeight());
+            }
         }
     }
     
@@ -131,4 +137,6 @@ public class Ball extends MyActor
             return (start <= rotation || rotation < end);
         }
     }
+    
+    public void setSpeed(int s) {speed = s;}
 }

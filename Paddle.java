@@ -20,7 +20,7 @@ public class Paddle extends MyActor
     public Paddle(int speed)
     {
         this.speed = speed;
-        space_pressed = false;
+        space_pressed = Greenfoot.isKeyDown("space");
         ball_stock = 0;
         fake = new FakeBall(this);
     }
@@ -64,7 +64,6 @@ public class Paddle extends MyActor
         {
             ball_stock--;
             getWorld().addObject(new Ball(), fake.getX(), fake.getY());
-            getGame().ballCreated();
             if(ball_stock == 0)
                 getWorld().removeObject(fake);
         }
@@ -76,4 +75,6 @@ public class Paddle extends MyActor
             getWorld().addObject(fake, 0, 0);
         ball_stock++;
     }
+    
+    public void setSpeed(int s) {speed = s;}
 }
