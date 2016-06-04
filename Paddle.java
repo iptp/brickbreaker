@@ -6,7 +6,6 @@ public class Paddle extends MyActor
     public static int DEFAULT_HEIGHT = 30;
     
     private boolean space_pressed;
-    private int speed;
     
     private int ball_stock;
     private FakeBall fake;
@@ -76,5 +75,8 @@ public class Paddle extends MyActor
         ball_stock++;
     }
     
-    public void setSpeed(int s) {speed = s;}
+    public boolean outOfStock()
+    {
+        return ball_stock == 0;
+    }
 }

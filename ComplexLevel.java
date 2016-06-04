@@ -1,6 +1,6 @@
 import java.awt.Color;
 
-public class ComplicatedLevel extends Level 
+public class ComplexLevel extends Level 
 {
     private Color[] brick_colors  = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
     private Color[] sturdy_colors = {Color.ORANGE, Color.CYAN, Color.MAGENTA};
@@ -8,16 +8,15 @@ public class ComplicatedLevel extends Level
     
     // The four colors, (S)turdy, (M)etal, and (P)owerup
     private String symbols = "0123SMP";
-    
-    // TODO better level
-    private String[] level = 
+
+    protected String[] level = 
     {
         "---------------",
         "---------------",
         "---------------",
-        "--0SSSSSSSSS0--",
-        "--1PPPPPPPPP1--",
-        "--2MMMMMMMMM2--",
+        "--00000000000--",
+        "--11111111111--",
+        "--PPPPPPPPPPP--",
         "--33333333333--",
         "--00000000000--",
         "--11111111111--",

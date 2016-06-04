@@ -83,7 +83,6 @@ public class BrickBreaker extends World
             text += "" + bricks;
         else
             text += numbers[bricks];
-            
         showText(text, 120, 40);
      }
     
@@ -97,7 +96,7 @@ public class BrickBreaker extends World
         if(balls > 0)
         {
             balls--;
-            if(balls == 0)
+            if(balls == 0 && paddle.outOfStock())
             {
                 if(lives == 0)
                     gameOver(false);

@@ -17,7 +17,6 @@ public class PowerUpBrick extends Brick
     public void collideWith(Ball ball)
     {
         getWorld().addObject(new Ball(ball.getRotation() + 180), ball.getX(), ball.getY());
-        getGame().ballCreated();
         die();
     }
 }
