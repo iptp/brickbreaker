@@ -2,11 +2,11 @@ import greenfoot.*;
 
 public class Ball extends Actor
 {
-    int speed = 3;
+    private int speed = 3;
     
     public Ball()
     {
-        this(0);
+        setRotation(0);
     }
     
     public Ball(int rotation)
@@ -14,27 +14,50 @@ public class Ball extends Actor
         setRotation(rotation);
     }
     
-    @Override
-    public void act() 
+    public void act()
     {
-        computeWallCollision();
+        int angle  = getRotation();
+        int radius = getImage().getWidth() / 2;
+        
+        int rightWall  = getWorld().getWidth() - 1;
+        int bottomWall = getWorld().getHeight() - 1;
+        
+        getWorld().showText("" + angle, 30, 15);
+        
+        // Collision against the left wall
+        if((90 < angle && angle < 270) && (getX() - radius < 0))
+            setRotation(180 - angle);
+        // Collision against the right wall
+        if((angle < 90 || angle > 270) && (getX() + radius > rightWall))
+            setRotation(180 - angle);
+        // Collision against the top wall
+        if(angle > 180 && getY() - radius < 0)
+            setRotation(-angle);
+        // Collision against the bottom wall
+        if(angle < 180 && getY() + radius > bottomWall)
+            setRotation(-angle);
+        
         move(speed);
     }
     
-    public void computeWallCollision()
+    // Workarounds to prevent the image from rotating
+    private int realRotation = 0;
+    
+    public void setRotation(int angle)
     {
-
+        // Keep the rotation within 0 .. 359
+        realRotation = ((angle % 360) + 360) % 360;
     }
     
-    public void bounceOnHorizontalAxis()
+    public int getRotation()
     {
-        int r = - getRotation();
-        setRotation(r);
+        return realRotation;
     }
     
-    public void bounceOnVerticalAxis()
+    public void move(int speed)
     {
-        int r = 180 - getRotation();
-        setRotation(r);
+        super.setRotation(realRotation);
+        super.move(speed);
+        super.setRotation(0);
     }
 }
