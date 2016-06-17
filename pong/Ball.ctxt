@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Ball
+comment1.params=
+comment1.target=Ball()
+comment2.params=spd\ angle
+comment2.target=Ball(int,\ int)
+comment3.params=w
+comment3.target=void\ addedToWorld(greenfoot.World)
+comment4.params=
+comment4.target=void\ act()
+numComments=5

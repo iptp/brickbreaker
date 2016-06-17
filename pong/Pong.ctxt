@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Pong
+comment1.params=
+comment1.target=Pong()
+comment2.params=
+comment2.target=void\ act()
+comment3.params=player
+comment3.target=void\ goal(int)
+comment4.params=go_left
+comment4.target=void\ spawnBall(boolean)
+numComments=5
