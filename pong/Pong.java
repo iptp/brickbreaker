@@ -19,7 +19,12 @@ public class Pong extends World
         
         addObject(new Paddle(4, "w", "s"), 0, getHeight() / 2);
         addObject(new Paddle(4, "8", "5"), getWidth(), getHeight() / 2);
-        spawnBall(Greenfoot.getRandomNumber(2) == 0);
+        
+        // Spawn a ball to a random direction (left or right) with 50% chance each
+        if(Greenfoot.getRandomNumber(2) == 0)
+            spawnBall(true);
+        else
+            spawnBall(false);
     }
     
     public void act()
@@ -28,6 +33,7 @@ public class Pong extends World
         showText(score1 + padding + score2, getWidth() / 2, getHeight() / 10); 
     }
     
+    // Remove all ball's, increment the player's score and spawn a new ball towards the opposite player
     public void goal(int player)
     {
         removeObjects(getObjects(Ball.class));
@@ -43,6 +49,7 @@ public class Pong extends World
         }
     }
     
+    // Spawn a ball from the center of the screen, to the right or to the left
     public void spawnBall(boolean go_left)
     {
         int angle = 0;

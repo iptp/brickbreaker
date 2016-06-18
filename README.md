@@ -1,4 +1,5 @@
 # Notes and to-do's
+0. **gitignore .class**
 0. Sound effects
 0. Special bricks
   * Metal (unbreakable, **funny sound effect**)

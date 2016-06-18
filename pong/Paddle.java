@@ -24,18 +24,14 @@ public class Paddle extends Actor
     
     public void addedToWorld(World w)
     {
-        // These are inverted because the paddle will be rotated 90 degrees
-        height = getImage().getWidth();
-        width  = getImage().getHeight();
+        // Height and width are inverted because the paddle will be vertical and the image is horizontal
+        getImage().scale(height, width);
         
         setRotation(90);
         
         // Fix the X position of the paddle, so the image is only touching the side of the screen
-        
-        // Left side of the screen
         if(getX() == 0)
             setLocation(getX() + width/2, getY());
-        // Right side of the screen
         else if(getX() == getWorld().getWidth() - 1)
             setLocation(getX() - width/2, getY());
     }
