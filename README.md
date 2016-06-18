@@ -1,4 +1,4 @@
-Sprites by [Kenney]("http://opengameart.org/content/puzzle-game-art")
+## Name?
 
 ### Status
 0. Pong game with new sprites
@@ -13,3 +13,5 @@ Sprites by [Kenney]("http://opengameart.org/content/puzzle-game-art")
 0. Better scoring
   * Bonus for each consecutive brick
   * Reset bonus when ball hits paddle
+
+Sprites by [Kenney](http://opengameart.org/content/puzzle-game-art)
