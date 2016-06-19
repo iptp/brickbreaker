@@ -1,11 +1,11 @@
 #BlueJ class context
 comment0.target=Ball
-comment1.params=
-comment1.target=Ball()
-comment2.params=spd\ angle
-comment2.target=Ball(int,\ int)
-comment3.params=w
-comment3.target=void\ addedToWorld(greenfoot.World)
-comment4.params=
-comment4.target=void\ act()
+comment1.params=spd\ angle
+comment1.target=Ball(int,\ int)
+comment2.params=w
+comment2.target=void\ addedToWorld(greenfoot.World)
+comment3.params=
+comment3.target=void\ act()
+comment4.params=s
+comment4.target=void\ sound(greenfoot.GreenfootSound)
 numComments=5
