@@ -18,7 +18,7 @@ public class Pong extends World
         bg.fill();
         
         addObject(new Paddle(4, "w", "s"), 0, getHeight() / 2);
-        addObject(new Paddle(4, "8", "5"), getWidth(), getHeight() / 2);
+        addObject(new Paddle(4, "up", "down"), getWidth(), getHeight() / 2);
         
         // Spawn a ball to a random direction (left or right) with 50% chance each
         if(Greenfoot.getRandomNumber(2) == 0)
@@ -57,6 +57,7 @@ public class Pong extends World
         if(go_left)
             angle = 180;
         
-        addObject(new Ball(4, angle), getWidth() / 2, getHeight() / 2);
+        addObject(new Ball(angle), getWidth() / 2, getHeight() / 2);
+        addObject(new Ball(angle+180), getWidth() / 2, getHeight() / 2);
     }
 }

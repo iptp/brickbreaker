@@ -12,20 +12,22 @@ public class Ball extends Actor
     private GreenfootSound hitWall = new GreenfootSound("twoTone2.mp3");
     private GreenfootSound score = new GreenfootSound("threeTone1.mp3");
     
+    GreenfootImage normalBall = new GreenfootImage("ballBlue.png");
+    GreenfootImage powerBall = new GreenfootImage("ballGrey.png");
     
-    public Ball(int spd, int angle)
+    public Ball(int angle)
     {
         hitPaddle.setVolume(50);
         hitWall.setVolume(50);
         score.setVolume(50);
         
-        speed = spd;
         trueRotation = angle;
     }
     
     public void addedToWorld(World w)
     {
         getImage().scale(radius * 2, radius * 2);
+        powerBall.scale(radius *2, radius * 2);
     }
 
     public void act() 
@@ -35,7 +37,7 @@ public class Ball extends Actor
         
         int angle = getRotation();
         Pong pong = (Pong) getWorld();
-        Actor paddle = getOneIntersectingObject(Paddle.class);
+        Paddle paddle = (Paddle) getOneIntersectingObject(Paddle.class);
         
         // Bounce off the paddles
         if(paddle != null)
@@ -45,14 +47,20 @@ public class Ball extends Actor
             // Become faster, if not already too fast
             if(speed < 15)
                 speed++;
+            else
+            {
+                setImage(normalBall);
+                speed = 4;
+            }
                 
             // Aim away from the center of the paddle
-            turnTowards(paddle.getX(), paddle.getY());
+            turnTowards(paddle.getWallX(), paddle.getY());
             setRotation(getRotation() + 180);
             
             // We don't wan the new angle to be too vertical, so we cap it
             angle = getRotation();
             int cap = 30;
+            int pow = 10;
             
             // There are four directions we have to take into account
             if(90 - cap < angle && angle <= 90) // Down-right |\
@@ -63,6 +71,9 @@ public class Ball extends Actor
                 angle = 270 - cap;
             else if(270 < angle && angle < 270 + cap) // Up-right |/
                 angle = 270 + cap;
+            // Special: if the ball bounces nearly vertically, it becomes much faster
+            else if(angle < pow || angle >= 360 - pow || 180 - pow < angle && angle <= 180 + pow)
+                speed = 15;
             
             setRotation(angle);
         }
@@ -90,7 +101,10 @@ public class Ball extends Actor
             sound(hitWall);
             setRotation(-angle);   
         }
-                
+        
+        if(speed >= 15)
+            setImage(powerBall);
+            
         move(speed);
         
         // Store the rotation
@@ -101,8 +115,7 @@ public class Ball extends Actor
     
     private void sound(GreenfootSound s)
     {
-        if(s.isPlaying())
-            s.stop();
+        s.stop();
         s.play();
     }
 }

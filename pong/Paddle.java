@@ -58,4 +58,12 @@ public class Paddle extends Actor
         else if(getY() + height/2 > getWorld().getHeight() - 1)
             setLocation(getX(), getWorld().getHeight() - height/2);
     }
+    
+    public int getWallX()
+    {
+        if(getX() == width / 2)
+            return 0;
+        else
+            return getWorld().getWidth() - 1;
+    }
 }

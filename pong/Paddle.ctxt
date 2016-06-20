@@ -8,4 +8,6 @@ comment3.params=w
 comment3.target=void\ addedToWorld(greenfoot.World)
 comment4.params=
 comment4.target=void\ act()
-numComments=5
+comment5.params=
+comment5.target=int\ getWallX()
+numComments=6
