@@ -61,9 +61,9 @@ public class Paddle extends Actor
     
     public int getWallX()
     {
-        if(getX() == width / 2)
-            return 0;
+        if(getX() < getWorld().getWidth() / 2)
+            return getX() - width / 2;
         else
-            return getWorld().getWidth() - 1;
+            return getX() + width / 2;
     }
 }

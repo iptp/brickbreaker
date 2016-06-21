@@ -7,6 +7,7 @@ public class Pong extends World
     // The scores of each player
     private int score1 = 0;
     private int score2 = 0;
+    private int ballCount = 0;
     
     public Pong()
     {    
@@ -17,14 +18,19 @@ public class Pong extends World
         bg.setColor(Color.darkGray);
         bg.fill();
         
-        addObject(new Paddle(4, "w", "s"), 0, getHeight() / 2);
-        addObject(new Paddle(4, "up", "down"), getWidth(), getHeight() / 2);
+        addObject(new Paddle(6, "w", "s"), 0, getHeight() / 2);
+        addObject(new Paddle(6, "7", "1"), getWidth(), getHeight() / 2);
+        //addObject(new Paddle(4, "t", "g"), 0, getHeight() / 2);
+        //addObject(new Paddle(4, "9", "3"), getWidth(), getHeight() / 2);
         
         // Spawn a ball to a random direction (left or right) with 50% chance each
-        if(Greenfoot.getRandomNumber(2) == 0)
+        //for(int i = 0; i < 2; i++)
+        //{
+        //if(Greenfoot.getRandomNumber(2) == 0)
             spawnBall(true);
-        else
+        //else
             spawnBall(false);
+        //}
     }
     
     public void act()
@@ -36,7 +42,8 @@ public class Pong extends World
     // Remove all ball's, increment the player's score and spawn a new ball towards the opposite player
     public void goal(int player)
     {
-        removeObjects(getObjects(Ball.class));
+        ballCount--;
+        //removeObjects(getObjects(Ball.class));
         if(player == 1)
         {
             score1++;
@@ -47,17 +54,25 @@ public class Pong extends World
             score2++;
             spawnBall(true);
         }
+        
+        if((score1 + score2) % 3 == 0 && ballCount < 5)
+            spawnBall(player == 1);
     }
     
     // Spawn a ball from the center of the screen, to the right or to the left
     public void spawnBall(boolean go_left)
     {
-        int angle = 0;
+        int angle;
+        ballCount++;
         
         if(go_left)
+            angle = 0;
+        else
             angle = 180;
+            
+        angle += Greenfoot.getRandomNumber(91) - 45;
         
         addObject(new Ball(angle), getWidth() / 2, getHeight() / 2);
-        addObject(new Ball(angle+180), getWidth() / 2, getHeight() / 2);
+        //addObject(new Ball(angle+180), getWidth() / 2, getHeight() / 2);
     }
 }

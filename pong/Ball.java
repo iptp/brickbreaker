@@ -81,13 +81,17 @@ public class Ball extends Actor
         else if(getX() - radius <= 0)
         {
             sound(score);
-            pong.goal(2);   
+            pong.goal(2);
+            getWorld().removeObject(this);
+            return;
         }
         // Touching right wall, player 1 scores
         else if(getX() + radius >= getWorld().getWidth() - 1)
         {
             sound(score);
             pong.goal(1);
+            getWorld().removeObject(this);
+            return;
         }
         // Bounce off the top wall
         else if(angle > 180 && getY() - radius <= 0)
