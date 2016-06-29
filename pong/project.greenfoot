@@ -1,7 +1,7 @@
 #Greenfoot project file
-class.Ball.image=ballBlue.png
+class.Ball.image=ballOrange.png
 class.Ball.superclass=greenfoot.Actor
-class.Paddle.image=paddleBlu.png
+class.Paddle.image=paddle.png
 class.Paddle.superclass=greenfoot.Actor
 class.Pong.superclass=greenfoot.World
 dependency1.from=Pong
@@ -39,7 +39,7 @@ readme.name=@README
 readme.width=47
 readme.x=10
 readme.y=10
-simulation.speed=51
+simulation.speed=50
 target1.height=50
 target1.name=Ball
 target1.showInterface=false

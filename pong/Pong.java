@@ -12,25 +12,21 @@ public class Pong extends World
     public Pong()
     {    
         super(1000, 600, 1);
+        Greenfoot.setSpeed(50);
         
         // Make the background gray
         GreenfootImage bg = getBackground();
         bg.setColor(Color.darkGray);
         bg.fill();
         
-        addObject(new Paddle(6, "w", "s"), 0, getHeight() / 2);
-        addObject(new Paddle(6, "7", "1"), getWidth(), getHeight() / 2);
-        //addObject(new Paddle(4, "t", "g"), 0, getHeight() / 2);
-        //addObject(new Paddle(4, "9", "3"), getWidth(), getHeight() / 2);
+        addObject(new Paddle(Paddle.Side.LEFT, 5, "w", "s"), 0, getHeight() / 2);
+        addObject(new Paddle(Paddle.Side.RIGHT, 5, "up", "down"), getWidth(), getHeight() / 2);
         
         // Spawn a ball to a random direction (left or right) with 50% chance each
-        //for(int i = 0; i < 2; i++)
-        //{
-        //if(Greenfoot.getRandomNumber(2) == 0)
+        if(Greenfoot.getRandomNumber(2) == 0)
             spawnBall(true);
-        //else
+        else
             spawnBall(false);
-        //}
     }
     
     public void act()

@@ -3,20 +3,23 @@ import java.util.List;
 
 public class Paddle extends Actor
 {
-    private int width = 24;
-    private int height = 104;
+    public enum Side { LEFT, RIGHT };
     
-    private int speed = 4;
-    private String upKey = "up";
+    private int width  = 30;
+    private int height = 150;
+    
+    private Side side = Side.LEFT;
+    private int speed = 3;
+    
+    private String upKey   = "up";
     private String downKey = "down";
     
-    public Paddle()
-    {
-        // Create a paddle with the default values above
-    }
+    // Create a paddle with the default values above
+    public Paddle() { }
     
-    public Paddle(int spd, String up, String down)
+    public Paddle(Side s, int spd, String up, String down)
     {
+        side = s;
         speed = spd;
         upKey = up;
         downKey = down;
@@ -24,16 +27,8 @@ public class Paddle extends Actor
     
     public void addedToWorld(World w)
     {
-        // Height and width are inverted because the paddle will be vertical and the image is horizontal
-        getImage().scale(height, width);
-        
-        setRotation(90);
-        
-        // Fix the X position of the paddle, so the image is only touching the side of the screen
-        if(getX() == 0)
-            setLocation(getX() + width/2, getY());
-        else if(getX() == getWorld().getWidth() - 1)
-            setLocation(getX() - width/2, getY());
+        getImage().scale(width, height);
+        fixLocation();
     }
     
     public void act() 
@@ -42,8 +37,6 @@ public class Paddle extends Actor
         {
             setRotation(270);
             move(speed);
-            // Set the rotation back to 90, to the image doesn't look rotated
-            setRotation(90);
         }
         else if(Greenfoot.isKeyDown(downKey))
         {
@@ -51,19 +44,41 @@ public class Paddle extends Actor
             move(speed);
         }
         
-        // Paddle went past the top wall
-        if(getY() - height/2 < 0)
-            setLocation(getX(), height/2);
-        // Paddle went past the bottom wall
-        else if(getY() + height/2 > getWorld().getHeight() - 1)
-            setLocation(getX(), getWorld().getHeight() - height/2);
+        fixLocation();
     }
     
-    public int getWallX()
+    public void bounceAway(Ball ball)
     {
-        if(getX() < getWorld().getWidth() / 2)
-            return getX() - width / 2;
-        else
-            return getX() + width / 2;
+        int originX = getX();
+        
+        if(side == Side.LEFT)
+            originX -= width / 2;
+        else // Side.RIGHT
+            originX += width / 2;
+            
+        ball.turnTowards(originX, getY());
+        ball.setRotation(ball.getRotation() + 180);
+    }
+    
+    // Prevents the paddle from being partially offscreen
+    private void fixLocation()
+    {
+        // Make the paddle face the correct direction
+        if(side == Side.LEFT)
+            setRotation(0);
+        else // Side.RIGHT
+            setRotation(180);
+            
+        // Prevent the paddle from going past the top or bottom walls
+        if(getY() - height/2 < 0)
+            setLocation(getX(), height/2);
+        else if(getY() + height/2 > getWorld().getHeight() - 1)
+            setLocation(getX(), getWorld().getHeight() - height/2);
+            
+        // Prevent the paddle from going past the left or right walls)
+        if(getX() - width/2 < 0)
+            setLocation(width/2, getY());
+        else if(getX() + width/2 > getWorld().getWidth() - 1)
+            setLocation(getWorld().getWidth() - width/2, getY());
     }
 }
